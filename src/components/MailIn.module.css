@@ -1,0 +1,152 @@
+.mailin {
+  background: linear-gradient(135deg, var(--tan-soft) 0%, var(--tan) 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0;
+}
+.mailin::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(45deg, rgba(59,35,20,0.04) 0 1px, transparent 1px 14px);
+  pointer-events: none;
+}
+.mailinInner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+}
+.mailinInner h2 {
+  font-size: clamp(36px, 4vw, 54px);
+  line-height: 1.05;
+  margin-bottom: 24px;
+}
+.mailinInner h2 em { font-style: italic; }
+.lede {
+  font-size: 18px;
+  color: var(--leather);
+  margin-bottom: 32px;
+  line-height: 1.55;
+  max-width: 520px;
+}
+.mailinSteps {
+  display: flex;
+  gap: 0;
+  margin-bottom: 40px;
+  border-top: 1px solid rgba(59,35,20,0.2);
+  padding-top: 28px;
+}
+.mailinStep {
+  flex: 1;
+  padding-right: 24px;
+}
+.stepNum {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 36px;
+  font-style: italic;
+  color: var(--leather);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.mailinStep strong {
+  display: block;
+  font-size: 14px;
+  color: var(--leather-deep);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.mailinStep span {
+  font-size: 13px;
+  color: var(--leather-mid);
+  line-height: 1.4;
+}
+.mailinCtas {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.mailinLink {
+  color: var(--leather-deep);
+  font-weight: 500;
+  border-bottom: 1px solid var(--leather);
+  padding-bottom: 2px;
+}
+
+/* Pricing card */
+.mailinCard {
+  background: var(--cream);
+  border-radius: 14px;
+  padding: 36px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(59,35,20,0.1);
+  position: relative;
+}
+.mailinCard::before {
+  content: "";
+  position: absolute;
+  top: -14px; right: 32px;
+  width: 60px; height: 28px;
+  background: var(--leather);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+.mailinCard::after {
+  content: "USA";
+  position: absolute;
+  top: -10px; right: 38px;
+  color: var(--tan);
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+}
+.mailinCard h4 {
+  font-size: 13px;
+  font-family: var(--font-jetbrains), monospace;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tan-deep);
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+.mailinPrices {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mailinPrices li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--rule);
+  font-size: 15px;
+}
+.mailinPrices li:last-child { border-bottom: 0; }
+.label { color: var(--leather); }
+.price {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 600;
+  color: var(--leather-deep);
+  font-size: 19px;
+  letter-spacing: 0;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.footnote {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--font-jetbrains), monospace;
+  line-height: 1.5;
+}
+
+@media (max-width: 1000px) {
+  .mailinInner { grid-template-columns: 1fr; gap: 48px; }
+  .mailinSteps { flex-direction: column; }
+}

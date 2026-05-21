@@ -1,0 +1,68 @@
+.services { background: var(--parchment); }
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.serviceCard {
+  position: relative;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 32px 28px;
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  overflow: hidden;
+  cursor: pointer;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+}
+.serviceCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(201,168,124,0.6);
+}
+.num {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  color: var(--tan-deep);
+  letter-spacing: 0.15em;
+  margin-bottom: 24px;
+}
+.icon {
+  width: 48px;
+  height: 48px;
+  color: var(--leather);
+  margin-bottom: 28px;
+  transition: transform .4s ease, color .4s ease;
+}
+.serviceCard:hover .icon {
+  transform: rotate(-6deg) scale(1.08);
+  color: var(--tan-deep);
+}
+.serviceCard h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  line-height: 1.15;
+}
+.serviceCard p {
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.55;
+  flex: 1;
+}
+.arrow {
+  margin-top: 20px;
+  color: var(--leather);
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap .25s ease;
+}
+.serviceCard:hover .arrow { gap: 12px; }
+
+@media (max-width: 1000px) {
+  .serviceGrid { grid-template-columns: 1fr; }
+}

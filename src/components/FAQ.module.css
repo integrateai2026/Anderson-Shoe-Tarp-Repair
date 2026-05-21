@@ -1,0 +1,106 @@
+.faq { background: var(--cream); }
+.faqInner {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 80px;
+}
+.faqLeft h2 {
+  font-size: clamp(36px, 4vw, 48px);
+  line-height: 1.05;
+  margin-bottom: 24px;
+}
+.faqLeft h2 em { font-style: italic; color: var(--tan-deep); font-weight: 500; }
+.faqLeft p {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+.faqHelp {
+  padding: 24px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--parchment);
+}
+.faqHelp strong {
+  display: block;
+  color: var(--leather-deep);
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.faqHelp p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 6px 0 12px;
+}
+.faqHelp a {
+  color: var(--tan-deep);
+  font-weight: 500;
+  font-size: 14px;
+}
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.faqItem {
+  border-bottom: 1px solid var(--rule-strong);
+}
+.faqItem:first-child { border-top: 1px solid var(--rule-strong); }
+.faqQ {
+  width: 100%;
+  text-align: left;
+  padding: 24px 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 21px;
+  color: var(--leather-deep);
+  font-weight: 600;
+  transition: color .2s ease;
+}
+.faqQ:hover { color: var(--tan-deep); }
+.qnum {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 12px;
+  color: var(--tan-deep);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+.plus {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  flex-shrink: 0;
+}
+.plus::before,
+.plus::after {
+  content: "";
+  position: absolute;
+  background: var(--leather);
+  top: 50%; left: 50%;
+  transition: transform .3s cubic-bezier(.4,0,.2,1), background .2s ease;
+}
+.plus::before { width: 14px; height: 1.5px; transform: translate(-50%, -50%); }
+.plus::after { width: 1.5px; height: 14px; transform: translate(-50%, -50%); }
+.open .plus::after { transform: translate(-50%, -50%) rotate(90deg); }
+.open .plus::before { background: var(--tan-deep); }
+.faqA {
+  overflow: hidden;
+  transition: max-height .4s cubic-bezier(.4,0,.2,1);
+}
+.faqAInner {
+  padding: 0 0 28px 80px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 620px;
+}
+
+@media (max-width: 1000px) {
+  .faqInner { grid-template-columns: 1fr; gap: 48px; }
+  .faqAInner { padding-left: 0; }
+}

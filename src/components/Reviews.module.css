@@ -1,0 +1,90 @@
+.reviews {
+  background: var(--leather);
+  color: var(--parchment);
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0;
+}
+.reviews::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(201,168,124,0.12), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 10% 90%, rgba(201,168,124,0.08), transparent 60%);
+  pointer-events: none;
+}
+.reviewsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  position: relative;
+}
+.review {
+  background: rgba(245,239,230,0.04);
+  border: 1px solid rgba(201,168,124,0.2);
+  border-radius: 12px;
+  padding: 36px 32px;
+  backdrop-filter: blur(4px);
+  transition: transform .3s ease, background .3s ease;
+}
+.review:hover {
+  transform: translateY(-4px);
+  background: rgba(245,239,230,0.07);
+}
+.stars {
+  display: flex;
+  gap: 4px;
+  color: var(--tan);
+  margin-bottom: 24px;
+}
+.review blockquote {
+  margin: 0;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--parchment);
+  font-weight: 500;
+  margin-bottom: 28px;
+}
+.review blockquote::before {
+  content: "\201C";
+  font-family: var(--font-playfair), Georgia, serif;
+  color: var(--tan);
+  font-size: 64px;
+  line-height: 0;
+  vertical-align: -22px;
+  margin-right: 6px;
+  font-style: italic;
+}
+.reviewAuthor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  border-top: 1px solid rgba(201,168,124,0.15);
+}
+.reviewAuthor strong {
+  color: var(--parchment);
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+}
+.reviewAuthor span {
+  color: rgba(245,239,230,0.5);
+  font-size: 12px;
+  font-family: var(--font-jetbrains), monospace;
+  margin-top: 2px;
+  display: block;
+}
+.gpin {
+  color: var(--tan);
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+}
+
+@media (max-width: 1000px) {
+  .reviewsGrid { grid-template-columns: 1fr; }
+  .reviews { padding: 80px 0; }
+}
