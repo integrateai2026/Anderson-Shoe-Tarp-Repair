@@ -2,47 +2,42 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Hero.module.css";
 
+const BASE = "?w=900&q=80&auto=format&fit=crop&crop=center";
+
 const STAGES = [
   {
     label: "Worn",
     stamp: "01 · The boots arrive",
-    filter: "grayscale(0.55) brightness(0.7) contrast(0.88) saturate(0.45)",
-    zoom: "1.04",
-    focalX: "0.5",
-    focalY: "0.5",
-    focalZ: "1",
+    // worn leather boots — proven working image
+    src: `https://images.unsplash.com/photo-1449505278894-297fdb3edbc1${BASE}`,
+    filter: "grayscale(0.55) brightness(0.7) contrast(0.88) saturate(0.4)",
+    alt: "Worn leather boots arriving at the shop before repair",
   },
   {
     label: "Stitched",
     stamp: "02 · Hand-stitching the welt",
-    filter: "sepia(0.15) brightness(0.82) contrast(1.0) saturate(0.75)",
-    zoom: "2.5",
-    focalX: "0.6",
-    focalY: "0.45",
-    focalZ: "2.5",
+    // cobbler tools + boot on workbench
+    src: `https://images.unsplash.com/photo-1529953717281-81a40b131119${BASE}`,
+    filter: "sepia(0.1) brightness(0.82) contrast(1.05) saturate(0.8)",
+    alt: "Shoemaker tools and a leather boot on the workbench",
   },
   {
     label: "Polished",
     stamp: "03 · Polish & condition",
-    filter: "brightness(0.95) contrast(1.08) saturate(0.95)",
-    zoom: "1.8",
-    focalX: "0.4",
-    focalY: "0.6",
-    focalZ: "1.8",
+    // leather boots from a different angle — filtered to look mid-process
+    src: `https://images.unsplash.com/photo-1511283402428-355853756676${BASE}`,
+    filter: "brightness(0.88) contrast(1.1) saturate(0.85) sepia(0.08)",
+    alt: "Leather boots mid-restoration — polishing and conditioning",
   },
   {
     label: "Restored",
     stamp: "04 · Restored, like new",
-    filter: "brightness(1.05) contrast(1.18) saturate(1.18)",
-    zoom: "1.15",
-    focalX: "0.5",
-    focalY: "0.5",
-    focalZ: "1.15",
+    // clean brown leather lace-up boots
+    src: `https://images.unsplash.com/photo-1608256246200-53e635b5b65f${BASE}`,
+    filter: "brightness(1.05) contrast(1.12) saturate(1.08)",
+    alt: "Beautifully restored clean brown leather lace-up boots",
   },
 ];
-
-const BASE_IMAGE =
-  "https://images.unsplash.com/photo-1449505278894-297fdb3edbc1?w=900&q=80&auto=format&fit=crop";
 
 export default function Hero() {
   const [stage, setStage] = useState(0);
@@ -96,8 +91,6 @@ export default function Hero() {
     runAnim();
   }, []);
 
-  const imgUrl = `${BASE_IMAGE}&crop=focalpoint&fp-x=${STAGES[stage].focalX}&fp-y=${STAGES[stage].focalY}&fp-z=${STAGES[stage].focalZ}`;
-
   return (
     <header className={styles.hero} ref={heroRef}>
       <div className={styles.heroBg} />
@@ -141,12 +134,18 @@ export default function Hero() {
 
         {/* Image */}
         <div className={styles.heroImage} ref={imgRef} aria-hidden="true">
-          <img
-            src={imgUrl}
-            alt="Worn leather boots being restored by hand"
-            className={styles.stageImg}
-            style={{ filter: STAGES[stage].filter }}
-          />
+          {STAGES.map((s, i) => (
+            <img
+              key={i}
+              src={s.src}
+              alt={s.alt}
+              className={styles.stageImg}
+              style={{
+                opacity: i === stage ? 1 : 0,
+                filter: s.filter,
+              }}
+            />
+          ))}
           <div className={styles.heroImgOverlay} />
           <span className={styles.stageStamp}>
             <span className={styles.stampDot} />

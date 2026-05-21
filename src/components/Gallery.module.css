@@ -34,26 +34,30 @@
   justify-content: flex-end;
   align-items: flex-start;
   padding: 28px 32px;
-  background-size: cover;
-  background-position: center;
   color: var(--parchment);
   position: relative;
+  overflow: hidden;
 }
-.baPhBefore {
-  background:
-    linear-gradient(180deg, rgba(28,15,7,0) 30%, rgba(28,15,7,0.9) 100%),
-    repeating-linear-gradient(118deg, rgba(70,45,25,0.6) 0 14px, rgba(50,30,18,0.6) 14px 28px),
-    radial-gradient(circle at 35% 60%, rgba(120,90,60,0.6), transparent 55%),
-    #2a1a0e;
-}
-.baPhAfter {
+.baPhBefore { background: #1a0e07; }
+.baPhAfter  { width: 100%; background: #2a1609; }
+
+/* Real image inside the baPh */
+.baImg {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  background:
-    linear-gradient(180deg, rgba(28,15,7,0) 30%, rgba(28,15,7,0.85) 100%),
-    radial-gradient(ellipse at 30% 40%, rgba(220,180,120,0.35), transparent 55%),
-    radial-gradient(ellipse at 80% 80%, rgba(180,138,60,0.4), transparent 60%),
-    repeating-linear-gradient(118deg, rgba(120,80,40,0.5) 0 18px, rgba(90,55,30,0.5) 18px 36px),
-    #3a2010;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Gradient overlay that sits on top of the image */
+.baOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(28,15,7,0) 30%, rgba(28,15,7,0.88) 100%);
+  z-index: 1;
+  pointer-events: none;
 }
 .baTag {
   position: absolute;
@@ -69,6 +73,7 @@
   backdrop-filter: blur(6px);
   padding: 6px 12px;
   border-radius: 999px;
+  z-index: 3;
 }
 .baTagRight { left: auto; right: 20px; }
 .baCap {
@@ -79,6 +84,8 @@
   line-height: 1.3;
   max-width: 320px;
   text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 3;
 }
 .baCapRight { align-self: flex-end; text-align: right; }
 .baSide.baBefore .baPh { align-items: flex-start; }
@@ -173,6 +180,26 @@
   align-items: flex-end;
   justify-content: flex-start;
   padding: 10px 12px;
+  overflow: hidden;
+  background: #1a0e07;
+}
+.baThumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: transform .5s ease;
+}
+.baCard:hover .baThumb img { transform: scale(1.04); }
+.baThumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(28,15,7,0.75) 100%);
+  z-index: 1;
+  pointer-events: none;
 }
 .baThumb span {
   font-family: var(--font-jetbrains), monospace;
@@ -183,19 +210,8 @@
   background: rgba(28,15,7,0.65);
   padding: 4px 8px;
   border-radius: 999px;
-}
-.baThumbBefore {
-  background:
-    linear-gradient(180deg, rgba(28,15,7,0) 50%, rgba(28,15,7,0.7) 100%),
-    repeating-linear-gradient(118deg, rgba(70,45,25,0.5) 0 10px, rgba(50,30,18,0.5) 10px 20px),
-    #2a1a0e;
-}
-.baThumbAfter {
-  background:
-    linear-gradient(180deg, rgba(28,15,7,0) 50%, rgba(28,15,7,0.7) 100%),
-    radial-gradient(ellipse at 30% 40%, rgba(220,180,120,0.3), transparent 55%),
-    repeating-linear-gradient(118deg, rgba(120,80,40,0.4) 0 14px, rgba(90,55,30,0.4) 14px 28px),
-    #3a2010;
+  position: relative;
+  z-index: 2;
 }
 .baCard figcaption strong {
   display: block;

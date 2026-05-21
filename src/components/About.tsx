@@ -7,8 +7,8 @@ export default function About() {
       <div className={`container ${styles.aboutInner}`}>
         <ScrollReveal className={styles.aboutPhoto}>
           <img
-            src="https://images.unsplash.com/photo-1449505278894-297fdb3edbc1?w=900&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=0.45&fp-y=0.5&fp-z=1.3"
-            alt="Hands and tools at the workbench — the kind of work Tom has done since 1990."
+            src="https://images.unsplash.com/photo-1529953717281-81a40b131119?w=900&q=80&auto=format&fit=crop&crop=center"
+            alt="Cobbler tools and a leather boot on the workbench — the kind of work Tom has done since 1990."
           />
           <div className={styles.aboutPhotoOverlay} />
           <span className={styles.stampCorner}>Tom Anderson · Owner</span>
