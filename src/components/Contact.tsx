@@ -81,28 +81,23 @@ export default function Contact() {
               ))}
             </div>
 
-            {/* Stylized map */}
+            {/* Map embed — OpenStreetMap (no API key required) */}
             <div className={styles.map}>
-              <svg viewBox="0 0 400 300" preserveAspectRatio="none">
-                <defs>
-                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(201,168,124,0.08)" strokeWidth="1"/>
-                  </pattern>
-                </defs>
-                <rect width="400" height="300" fill="url(#grid)"/>
-                <path d="M0 140 L400 130" stroke="rgba(201,168,124,0.25)" strokeWidth="2"/>
-                <path d="M0 200 L400 195" stroke="rgba(201,168,124,0.15)" strokeWidth="1.5"/>
-                <path d="M210 0 L205 300" stroke="rgba(201,168,124,0.25)" strokeWidth="2"/>
-                <path d="M120 0 L125 300" stroke="rgba(201,168,124,0.15)" strokeWidth="1.5"/>
-                <path d="M300 0 L305 300" stroke="rgba(201,168,124,0.15)" strokeWidth="1.5"/>
-                <text x="20" y="135" fill="rgba(201,168,124,0.5)" fontFamily="monospace" fontSize="9" letterSpacing="2">25TH ST S</text>
-                <text x="215" y="20" fill="rgba(201,168,124,0.5)" fontFamily="monospace" fontSize="9" letterSpacing="2" transform="rotate(90 215 20)">32ND AVE S</text>
-              </svg>
-              <div className={styles.pin} />
-              <div className={styles.mapOverlay}>
-                <strong>Anderson&apos;s Shop</strong>
+              <iframe
+                src="https://www.openstreetmap.org/export/embed.html?bbox=-96.8350%2C46.8430%2C-96.8100%2C46.8560&layer=mapnik&marker=46.8490%2C-96.8222"
+                title="Anderson's Shoe & Tarp Repair — 3060 D 25th St. S., Fargo, ND"
+                allowFullScreen
+                loading="lazy"
+              />
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=3060+D+25th+St+S,+Fargo,+ND+58103"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.mapOverlay}
+              >
+                <strong>Open in Google Maps</strong>
                 3060 D 25th St. S., Fargo
-              </div>
+              </a>
             </div>
           </ScrollReveal>
 
