@@ -84,7 +84,7 @@ export default function Contact() {
             {/* Google Maps embed */}
             <div className={styles.map}>
               <iframe
-                src="https://maps.google.com/maps?q=3060+D+25th+St+S,+Fargo,+ND+58103&output=embed&z=16"
+                src="https://maps.google.com/maps?q=3060+D+25th+St+S,+Fargo,+ND+58103&output=embed&z=18&t=h"
                 title="Anderson's Shoe & Tarp Repair — 3060 D 25th St. S., Fargo, ND"
                 allowFullScreen
                 loading="lazy"
