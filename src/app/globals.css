@@ -134,6 +134,28 @@ section { padding: 120px 0; }
 }
 .btn-dark:hover { background: var(--leather-deep); transform: translateY(-2px); }
 
+/* ── Scroll-reveal animation ─────────────────────────────────────────────
+   Used by ScrollReveal.tsx. CSS @keyframes always play from their `from`
+   state, so there is no iOS-Safari "compositor batching" issue that
+   plagues CSS transitions triggered via inline styles + requestAnimationFrame.
+   animation-fill-mode: both  →  element stays hidden during delay (backwards)
+                                 and stays visible after finish (forwards).
+──────────────────────────────────────────────────────────────────────── */
+@keyframes sr-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(var(--sr-from-y, 20px)) translateX(var(--sr-from-x, 0px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+}
+.sr-revealed {
+  animation: sr-reveal 0.85s ease both;
+  animation-delay: var(--sr-delay, 0s);
+}
+
 @media (max-width: 1000px) {
   .section-head { grid-template-columns: 1fr; gap: 24px; }
   section { padding: 80px 0; }

@@ -13,41 +13,26 @@ interface Props {
 /**
  * ScrollReveal — mobile-safe scroll animation.
  *
- * Uses CSS transitions (not GSAP) so animations run on the browser's
- * compositor thread with no JavaScript timing dependency. Triggered by
- * IntersectionObserver, which is fully reliable on iOS Safari.
+ * Uses CSS @keyframes (sr-reveal, defined in globals.css) triggered by
+ * IntersectionObserver. Unlike CSS transitions, @keyframes animations
+ * always play from their `from` state when the class is added — there is
+ * no "same-frame batching" problem on iOS Safari's compositor thread.
  *
- * No async imports = no gap between element being hidden and animation
- * starting = no permanently-invisible elements on slow mobile connections.
+ * How it works:
+ *   1. On mount: hide targets via opacity:0 inline + set CSS vars for
+ *      the starting transform values used by the `from` keyframe.
+ *   2. When element scrolls into view (or is already in view on load):
+ *      add the .sr-revealed class. The browser immediately applies the
+ *      animation's `from` state (opacity:0) and plays to `to` (opacity:1).
+ *   3. animation-fill-mode: both keeps the element hidden during any
+ *      stagger delay and visible after the animation finishes.
  */
 
-const DURATION = 0.85; // seconds for the CSS transition
-const STAGGER  = 0.09; // seconds between staggered children
+const STAGGER = 0.09; // seconds between staggered children
 
 function show(el: HTMLElement, delay: number) {
-  /**
-   * Double-rAF pattern — critical for CSS transitions to fire reliably.
-   *
-   * If we set `transition` and `opacity:1` in the same frame the browser
-   * batches them and skips the animation (already at target value).
-   *
-   * Frame 1: browser paints/commits the current opacity:0 state.
-   * Frame 2: we change the value — now there is a real before/after
-   *          difference for the transition to animate between.
-   */
-  requestAnimationFrame(() => {
-    // Frame 1 — ensure opacity:0 is committed to the render pipeline
-    void el.offsetHeight; // force a style recalculation
-    requestAnimationFrame(() => {
-      // Frame 2 — apply transition + new values; transition will fire
-      el.style.transition = [
-        `opacity ${DURATION}s ease ${delay}s`,
-        `transform ${DURATION}s ease ${delay}s`,
-      ].join(", ");
-      el.style.opacity = "1";
-      el.style.transform = "translateY(0) translateX(0)";
-    });
-  });
+  el.style.setProperty("--sr-delay", `${delay}s`);
+  el.classList.add("sr-revealed");
 }
 
 export default function ScrollReveal({
@@ -75,9 +60,12 @@ export default function ScrollReveal({
     const fromY = stagger ? 24 : 20;
 
     // ── 1. Hide targets synchronously (before any paint) ─────────────────
+    // Store animation start values as CSS custom properties so the
+    // `from` keyframe in globals.css can read them.
     targets.forEach((t) => {
       t.style.opacity = "0";
-      t.style.transform = `translateY(${fromY}px) translateX(${fromX}px)`;
+      t.style.setProperty("--sr-from-y", `${fromY}px`);
+      t.style.setProperty("--sr-from-x", `${fromX}px`);
     });
 
     // ── 2. Reveal helper ──────────────────────────────────────────────────
@@ -95,8 +83,6 @@ export default function ScrollReveal({
     }
 
     // ── 4. Otherwise, IntersectionObserver fires when element scrolls in ─
-    // IntersectionObserver is natively reliable on iOS Safari, unlike
-    // GSAP ScrollTrigger which can miss momentum-scroll events.
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
