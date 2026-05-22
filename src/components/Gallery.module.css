@@ -9,7 +9,13 @@
 }
 .baCompare {
   position: relative;
-  aspect-ratio: 16/10;
+  /* padding-top trick = cross-browser intrinsic ratio that works on iOS 12+.
+     aspect-ratio: 16/10 only arrived in iOS Safari 15 (Sept 2021); older
+     devices collapse the container to 0 height and overflow:hidden hides
+     everything. padding-top % is always relative to the element's WIDTH,
+     so 62.5% = 10/16 = correct 16:10 ratio on every browser. */
+  height: 0;
+  padding-top: 62.5%;
   border-radius: 10px;
   overflow: hidden;
   user-select: none;
