@@ -35,11 +35,16 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   padding-top: 4px;
+  white-space: nowrap;
 }
 .infoValue {
   color: var(--parchment);
   font-size: 17px;
   line-height: 1.5;
+  /* Prevent long URLs from overflowing */
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
 }
 .infoValue a {
   color: var(--parchment);
@@ -329,8 +334,21 @@
   .contact { padding: 80px 0 0; }
   .fieldRow { grid-template-columns: 1fr; gap: 16px; }
 }
-/* Single column footer on small phones */
-@media (max-width: 540px) {
+/* Stack info rows + single-column footer on small phones */
+@media (max-width: 600px) {
+  /* Stack label above value — prevents long text overflow */
+  .infoRow {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 16px 0;
+  }
+  .infoValue { font-size: 15px; }
+  /* Map: tighter on mobile */
+  .map { aspect-ratio: 16/9; }
+  .mapOverlay { padding: 10px 12px; font-size: 12px; }
+  /* Footer */
   .footerGrid { grid-template-columns: 1fr; gap: 32px; }
-  .infoRow { grid-template-columns: 100px 1fr; gap: 16px; }
+  .footer { margin-top: 60px; }
+  /* Form */
+  .formCard { padding: 20px 16px; }
 }
