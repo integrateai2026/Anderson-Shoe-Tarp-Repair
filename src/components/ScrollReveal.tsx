@@ -24,80 +24,100 @@ export default function ScrollReveal({
     const el = ref.current;
     if (!el) return;
 
-    // ── Reduced motion: skip animation entirely, show immediately ─────────
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return; // element already visible at default opacity
-    }
+    // Skip animation entirely for reduced-motion users
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    // ── Safety fallback: if GSAP fails to initialise in 2 s, unhide ──────
-    const fallback = setTimeout(() => {
-      el.style.opacity = "1";
-      el.style.transform = "none";
+    // Is the element already visible on load?
+    const rect = el.getBoundingClientRect();
+    const inView =
+      rect.top < window.innerHeight * 0.95 && rect.bottom > 0;
+
+    // Pre-hide below-fold elements synchronously so they don't flash
+    // visible before GSAP loads. Elements in view are left untouched.
+    if (!inView) {
       if (stagger) {
         Array.from(el.children).forEach((c) => {
-          (c as HTMLElement).style.opacity = "1";
-          (c as HTMLElement).style.transform = "none";
+          (c as HTMLElement).style.opacity = "0";
         });
+      } else {
+        el.style.opacity = "0";
       }
-    }, 2000);
+    }
 
-    const run = async () => {
+    // Run the GSAP animation (called once the element is in view)
+    const animate = async () => {
       try {
         const { gsap } = await import("gsap");
-        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-        gsap.registerPlugin(ScrollTrigger);
-        clearTimeout(fallback);
-
-        // ── Is element already in the viewport? Animate immediately ───────
-        const rect = el.getBoundingClientRect();
-        const inView = rect.top < window.innerHeight * 0.95;
-
-        const commonTo = {
-          y: 0, opacity: 1, x: 0,
-          duration: 1.0,
-          ease: "power2.out",
-          delay,
-          force3D: false,
-          clearProps: "transform,opacity",
-        };
-
-        const trigger = inView
-          ? undefined   // already visible → no scroll trigger needed
-          : {
-              trigger: el,
-              start: "top 92%",    // generous threshold — works on mobile
-              toggleActions: "play none none none",
-              once: true,           // fire once, never get "stuck"
-              invalidateOnRefresh: true, // recalc on orientation change
-            };
 
         if (stagger) {
-          const kids = Array.from(el.children);
           gsap.fromTo(
-            kids,
+            Array.from(el.children),
             { y: 24, opacity: 0, x: fromX },
-            { ...commonTo, stagger: 0.1, scrollTrigger: trigger }
+            {
+              y: 0,
+              opacity: 1,
+              x: 0,
+              duration: 1.0,
+              ease: "power2.out",
+              stagger: 0.1,
+              delay,
+              clearProps: "transform,opacity",
+            }
           );
         } else {
           gsap.fromTo(
             el,
             { y: 20, opacity: 0, x: fromX },
-            { ...commonTo, duration: 1.1, scrollTrigger: trigger }
+            {
+              y: 0,
+              opacity: 1,
+              x: 0,
+              duration: 1.1,
+              ease: "power2.out",
+              delay,
+              clearProps: "transform,opacity",
+            }
           );
         }
-
-        // ── Refresh after a tick so iOS has laid out the page ─────────────
-        requestAnimationFrame(() => ScrollTrigger.refresh());
-
       } catch {
-        // GSAP failed — make element visible
-        el.style.opacity = "1";
-        el.style.transform = "none";
+        // GSAP failed — just make the element visible
+        if (stagger) {
+          Array.from(el.children).forEach((c) => {
+            (c as HTMLElement).style.opacity = "1";
+            (c as HTMLElement).style.transform = "none";
+          });
+        } else {
+          el.style.opacity = "1";
+          el.style.transform = "none";
+        }
       }
     };
 
-    run();
-    return () => clearTimeout(fallback);
+    // Already visible on load → animate immediately, no observer needed
+    if (inView) {
+      animate();
+      return;
+    }
+
+    // Below the fold → IntersectionObserver fires when user scrolls to it.
+    // IntersectionObserver is fully reliable on iOS Safari; ScrollTrigger is not.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          observer.disconnect();
+          animate();
+        }
+      },
+      {
+        // Trigger when at least 5% of the element enters the viewport.
+        // Negative bottom margin gives a small head-start before fully in view.
+        threshold: 0.05,
+        rootMargin: "0px 0px -30px 0px",
+      }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
   }, [delay, stagger, fromX]);
 
   const Component = Tag as ElementType;
