@@ -25,16 +25,28 @@ const DURATION = 0.85; // seconds for the CSS transition
 const STAGGER  = 0.09; // seconds between staggered children
 
 function show(el: HTMLElement, delay: number) {
-  // requestAnimationFrame ensures the browser has painted the hidden
-  // (opacity:0) state before we switch to visible — this is what makes
-  // the CSS transition actually play rather than snap.
+  /**
+   * Double-rAF pattern — critical for CSS transitions to fire reliably.
+   *
+   * If we set `transition` and `opacity:1` in the same frame the browser
+   * batches them and skips the animation (already at target value).
+   *
+   * Frame 1: browser paints/commits the current opacity:0 state.
+   * Frame 2: we change the value — now there is a real before/after
+   *          difference for the transition to animate between.
+   */
   requestAnimationFrame(() => {
-    el.style.transition = [
-      `opacity ${DURATION}s ease ${delay}s`,
-      `transform ${DURATION}s ease ${delay}s`,
-    ].join(", ");
-    el.style.opacity = "1";
-    el.style.transform = "translateY(0) translateX(0)";
+    // Frame 1 — ensure opacity:0 is committed to the render pipeline
+    void el.offsetHeight; // force a style recalculation
+    requestAnimationFrame(() => {
+      // Frame 2 — apply transition + new values; transition will fire
+      el.style.transition = [
+        `opacity ${DURATION}s ease ${delay}s`,
+        `transform ${DURATION}s ease ${delay}s`,
+      ].join(", ");
+      el.style.opacity = "1";
+      el.style.transform = "translateY(0) translateX(0)";
+    });
   });
 }
 
