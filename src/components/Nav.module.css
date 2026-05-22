@@ -132,6 +132,13 @@
   background: #6ec384;
   flex-shrink: 0;
 }
+/* Phone icon — hidden on desktop, shown on mobile */
+.phoneIcon {
+  display: none;
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
 
 /* ── Hamburger button ─────────────────────────────────────────────────── */
 .hamburger {
@@ -257,10 +264,12 @@
   .navLinks  { display: none; }
   .hamburger { display: flex; }
   .navInner  { grid-template-columns: 1fr auto; }
-  /* Shrink phone text on small phones */
-  .ctaLabel  { display: none; }
+  /* Hide number + dot; show phone icon instead */
+  .ctaLabel { display: none; }
+  .phDot    { display: none; }
+  .phoneIcon { display: block; }
   .navCta {
-    padding: 10px 14px;
+    padding: 10px 13px;
     gap: 0;
   }
 }
