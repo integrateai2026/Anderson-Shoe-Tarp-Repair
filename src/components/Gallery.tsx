@@ -52,10 +52,12 @@ const BEFORE_IMG = UNS("1511283402428-355853756676", Q2); // boots on pavement �
 const AFTER_IMG  = UNS("1605812860427-4024433a70fd", Q2); // clean leather boot close-up
 
 export default function Gallery() {
-  const compareRef = useRef<HTMLDivElement>(null);
-  const beforeRef  = useRef<HTMLDivElement>(null);
-  const handleRef  = useRef<HTMLDivElement>(null);
-  const dragging   = useRef(false);
+  const compareRef   = useRef<HTMLDivElement>(null);
+  const beforeRef    = useRef<HTMLDivElement>(null);
+  const handleRef    = useRef<HTMLDivElement>(null);
+  const beforeCapRef = useRef<HTMLSpanElement>(null);
+  const afterCapRef  = useRef<HTMLSpanElement>(null);
+  const dragging     = useRef(false);
 
   const setPos = (clientX: number) => {
     const wrap   = compareRef.current;
@@ -67,6 +69,16 @@ export default function Gallery() {
     pct = Math.max(2, Math.min(98, pct));
     before.style.width = pct + "%";
     handle.style.left  = pct + "%";
+
+    // Fade captions as their side gets too narrow to show them cleanly.
+    // Each caption is fully visible at 50 %, fades linearly, gone at the extreme.
+    //   After  caption: 1.0 at pct ≤ 50, 0.0 at pct ≥ 90
+    //   Before caption: 1.0 at pct ≥ 50, 0.0 at pct ≤ 10
+    const clamp = (v: number) => Math.max(0, Math.min(1, v));
+    if (afterCapRef.current)
+      afterCapRef.current.style.opacity  = String(clamp(1 - (pct - 50) / 40));
+    if (beforeCapRef.current)
+      beforeCapRef.current.style.opacity = String(clamp(1 - (50 - pct) / 40));
   };
 
   useEffect(() => {
@@ -142,7 +154,7 @@ export default function Gallery() {
                 />
                 <div className={styles.baOverlay} />
                 <span className={`${styles.baTag} ${styles.baTagRight}`}>After</span>
-                <span className={`${styles.baCap} ${styles.baCapRight}`}>
+                <span ref={afterCapRef} className={`${styles.baCap} ${styles.baCapRight}`}>
                   Restored · New welt, polish, conditioning
                 </span>
               </div>
@@ -159,7 +171,7 @@ export default function Gallery() {
                 />
                 <div className={styles.baOverlay} />
                 <span className={styles.baTag}>Before</span>
-                <span className={styles.baCap}>Worn · Cracked welt, separated sole</span>
+                <span ref={beforeCapRef} className={styles.baCap}>Worn · Cracked welt, separated sole</span>
               </div>
             </div>
 

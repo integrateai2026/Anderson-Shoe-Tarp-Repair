@@ -92,6 +92,7 @@
   text-shadow: 0 1px 8px rgba(0,0,0,0.5);
   position: relative;
   z-index: 3;
+  transition: opacity 0.12s ease;
 }
 .baCapRight { align-self: flex-end; text-align: right; }
 .baSide.baBefore .baPh { align-items: flex-start; }
@@ -236,13 +237,6 @@
   .baFeature { grid-template-columns: 1fr; }
   .baStrip   { grid-template-columns: repeat(2, 1fr); }
 }
-/* Hide slider captions on mobile — 50% width is too narrow for 18px italic
-   text; both captions collide around the divider line. Tags (BEFORE/AFTER)
-   remain visible so context is preserved. */
-@media (max-width: 700px) {
-  .baCap { display: none; }
-}
-
 /* Horizontal scroll strip on small phones */
 @media (max-width: 540px) {
   .baStrip {
