@@ -139,3 +139,10 @@ section { padding: 120px 0; }
   section { padding: 80px 0; }
   .container { padding: 0 20px; }
 }
+@media (max-width: 480px) {
+  section { padding: 64px 0; }
+  .container { padding: 0 16px; }
+  .section-head { margin-bottom: 40px; }
+  /* Prevent heading overflow on small screens */
+  h1, h2, h3 { word-break: break-word; }
+}

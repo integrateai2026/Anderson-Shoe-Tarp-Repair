@@ -228,5 +228,18 @@
 
 @media (max-width: 1000px) {
   .baFeature { grid-template-columns: 1fr; }
-  .baStrip { grid-template-columns: repeat(2, 1fr); }
+  .baStrip   { grid-template-columns: repeat(2, 1fr); }
+}
+/* Horizontal scroll strip on small phones */
+@media (max-width: 540px) {
+  .baStrip {
+    grid-template-columns: repeat(4, 72vw);
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
+    gap: 12px;
+  }
+  .baCard { scroll-snap-align: start; }
 }
