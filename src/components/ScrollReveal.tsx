@@ -49,6 +49,13 @@ export default function ScrollReveal({
     const el = ref.current;
     if (!el) return;
 
+    // ── Mobile bail-out ───────────────────────────────────────────────────
+    // On phones (< 768 px) we skip every opacity/transform trick and let
+    // content render at full opacity. This guarantees visibility on iOS
+    // Safari, where CSS-animation + inline-opacity interactions are buggy.
+    // Scroll-reveal is a desktop enhancement; mobile users always see content.
+    if (window.matchMedia("(max-width: 767px)").matches) return;
+
     // Respect reduced-motion — skip all animation
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
